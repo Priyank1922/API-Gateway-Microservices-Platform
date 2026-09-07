@@ -1,10 +1,10 @@
-# 🌐 API Gateway & Microservices Platform
+#  API Gateway & Microservices Platform
 
 An enterprise-grade, distributed **API Gateway & Microservices Platform** built with **Java 17+ / Java 25**, **Spring Boot 3.3**, **Spring Cloud Gateway**, **Netflix Eureka Service Discovery**, **Resilience4j**, **MySQL**, and a standalone **Thymeleaf UI Dashboard** with sleek micro-animations and hover effects.
 
 ---
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 ```
                                 +-------------------------------------------+
