@@ -1,0 +1,14 @@
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\AiAnalyticsApplication.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\config\DataInitializer.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\controller\AiAnalyticsController.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\dto\AnalyticsDashboardDto.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\dto\ThreatAnalysisRequest.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\dto\ThreatAnalysisResult.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\dto\TrafficPredictionDto.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\entity\SecurityThreatLog.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\entity\TrafficMetric.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\repository\SecurityThreatLogRepository.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\repository\TrafficMetricRepository.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\service\AiAnalyticsService.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\service\AnomalyDetectionEngine.java
+C:\Desktop\API_GateWay\ai-analytics-service\src\main\java\com\apigateway\ai\service\TrafficPredictionService.java

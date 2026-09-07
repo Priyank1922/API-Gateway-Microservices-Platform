@@ -1,0 +1,8 @@
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\config\DataInitializer.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\controller\ProductController.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\dto\ProductDto.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\dto\StockDeductRequest.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\entity\Product.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\ProductServiceApplication.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\repository\ProductRepository.java
+C:\Desktop\API_GateWay\product-service\src\main\java\com\apigateway\product\service\ProductService.java

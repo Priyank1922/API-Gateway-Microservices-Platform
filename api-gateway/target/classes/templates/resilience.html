@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilience &amp; Rate Limiter Lab | API Gateway Platform</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar('resilience')}"></div>
+
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Resilience &amp; Rate Limiter Simulator Lab</h1>
+            <p class="page-subtitle">Test Token Bucket sliding-window rate throttling (HTTP 429) and Resilience4j Circuit Breaker fallbacks.</p>
+        </div>
+
+        <!-- Section 1: Rate Limiter Burst Test Lab -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🚦</span> Token Bucket Rate Limiting Burst Simulator
+                </div>
+                <span class="badge-code code-2xx">Limit: 10 req/s • Burst: 20</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                The Gateway employs a per-client token bucket algorithm. When request velocity exceeds bucket capacity, the gateway immediately throttles with <code>HTTP 429 Too Many Requests</code> and injects <code>Retry-After</code> headers.
+            </p>
+
+            <div class="grid-3" style="margin-bottom: 1.5rem;">
+                <div class="card" style="padding: 1rem; border-color: var(--border-color);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Successful (200 OK)</div>
+                    <div id="burst-ok-count" style="font-size: 2rem; font-weight: 800; color: var(--success);">0</div>
+                </div>
+                <div class="card" style="padding: 1rem; border-color: var(--border-color);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Rate Limited (429)</div>
+                    <div id="burst-429-count" style="font-size: 2rem; font-weight: 800; color: var(--danger);">0</div>
+                </div>
+                <div class="card" style="padding: 1rem; border-color: var(--border-color); display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.35rem;">Throttle Rate</div>
+                    <div class="progress-bar">
+                        <div id="burst-gauge-fill" class="progress-fill danger" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <button id="burst-start-btn" class="btn btn-primary" onclick="runRateLimiterBurst(25)">
+                    🚀 Launch 25-Request Burst
+                </button>
+                <button class="btn btn-secondary" onclick="runRateLimiterBurst(40)">
+                    ⚡ Launch 40-Request Overload
+                </button>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Live Gateway Event Stream</label>
+                <div id="burst-log-output" class="code-box" style="height: 180px; overflow-y: auto;">
+                    <span style="color: var(--text-muted);">Click "Launch 25-Request Burst" above to observe live throttling...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Circuit Breaker & Fallback Simulation -->
+        <div class="card card-hover">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🛡️</span> Resilience4j Circuit Breaker Fallbacks
+                </div>
+                <span class="badge-code code-2xx">Failure Threshold: 50%</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                If a backend microservice fails, crashes, or times out, the circuit breaker opens to protect the ecosystem and routes incoming traffic to intelligent fallback handlers.
+            </p>
+
+            <div class="grid-4" style="margin-bottom: 1.5rem;">
+                <div class="service-card card-hover">
+                    <div class="service-name" style="font-size: 0.95rem;">Auth Fallback</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0;">Simulates degraded auth service</div>
+                    <button class="btn btn-secondary btn-sm" onclick="testFallbackRoute('/fallback/auth')">Test Fallback ⚡</button>
+                </div>
+
+                <div class="service-card card-hover">
+                    <div class="service-name" style="font-size: 0.95rem;">Product Fallback</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0;">Serves cached backup catalog</div>
+                    <button class="btn btn-secondary btn-sm" onclick="testFallbackRoute('/fallback/products')">Test Fallback ⚡</button>
+                </div>
+
+                <div class="service-card card-hover">
+                    <div class="service-name" style="font-size: 0.95rem;">Order Fallback</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0;">Graceful rejection &amp; queue</div>
+                    <button class="btn btn-secondary btn-sm" onclick="testFallbackRoute('/fallback/orders')">Test Fallback ⚡</button>
+                </div>
+
+                <div class="service-card card-hover">
+                    <div class="service-name" style="font-size: 0.95rem;">AI Service Fallback</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0;">Switches to Gateway heuristic mode</div>
+                    <button class="btn btn-secondary btn-sm" onclick="testFallbackRoute('/fallback/ai')">Test Fallback ⚡</button>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Circuit Breaker Fallback Response Output</label>
+                <pre id="cb-test-output" class="code-box" style="min-height: 120px;">{
+  "notice": "Click any 'Test Fallback' button above to inspect fallback payloads."
+}</pre>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div>API Gateway &amp; Microservices Platform • Fault Tolerance &amp; Resilience Center</div>
+    </footer>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+    <script>
+        async function testFallbackRoute(url) {
+            const out = document.getElementById('cb-test-output');
+            out.innerText = 'Triggering fallback route: ' + url + '...';
+            try {
+                const res = await fetch(url);
+                const json = await res.json();
+                out.innerText = JSON.stringify(json, null, 2);
+            } catch (e) {
+                out.innerText = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

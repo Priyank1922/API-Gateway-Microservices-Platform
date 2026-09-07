@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive API Sandbox | API Gateway Platform</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar('sandbox')}"></div>
+
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Interactive API Gateway Sandbox</h1>
+            <p class="page-subtitle">Execute live HTTP requests directly through Spring Cloud Gateway reverse proxy to backend microservices.</p>
+        </div>
+
+        <!-- Quick Fill Preset Chips -->
+        <div class="card card-hover" style="margin-bottom: 1.5rem; padding: 1.1rem 1.5rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.6rem;">
+                ⚡ Quick Presets (Click to load template):
+            </div>
+            <div class="chip-container" style="margin-bottom: 0;">
+                <span class="chip active" onclick="applyPreset('get-products')">📦 GET /api/products</span>
+                <span class="chip" onclick="applyPreset('auth-login')">🔑 POST /api/auth/login</span>
+                <span class="chip" onclick="applyPreset('auth-register')">👤 POST /api/auth/register</span>
+                <span class="chip" onclick="applyPreset('create-product')">➕ POST /api/products</span>
+                <span class="chip" onclick="applyPreset('get-orders')">🛒 GET /api/orders</span>
+                <span class="chip" onclick="applyPreset('create-order')">💳 POST /api/orders</span>
+                <span class="chip" onclick="applyPreset('ai-analytics')">🤖 GET /api/ai/analytics</span>
+                <span class="chip" onclick="applyPreset('ai-threat-test')">🚨 Test SQLi Threat</span>
+            </div>
+        </div>
+
+        <!-- Request / Response Dual Column Grid -->
+        <div class="grid-2">
+            <!-- Left: Request Builder -->
+            <div class="card card-hover">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>📤</span> Request Composer
+                    </div>
+                    <span class="badge-code code-2xx">Gateway Proxy</span>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 0.75rem;">
+                    <div style="width: 130px;">
+                        <label class="form-label">Method</label>
+                        <select id="sb-method" class="form-control" style="font-weight: 700;">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="form-label">Gateway Path</label>
+                        <input type="text" id="sb-path" class="form-control" value="/api/products" placeholder="/api/products">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Authorization (Bearer JWT Token)</label>
+                    <input type="text" id="sb-token" class="form-control font-mono" placeholder="Optional: Bearer eyJhbGciOiJIUzI1Ni...">
+                    <small style="font-size: 0.75rem; color: var(--text-muted);">Tip: Use the <code>POST /api/auth/login</code> preset to automatically retrieve and store token.</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">X-API-Key Header (Optional)</label>
+                    <input type="text" id="sb-api-key" class="form-control font-mono" placeholder="ak_admin_prod_key_77889900112233">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Request Body (JSON)</label>
+                    <textarea id="sb-body" class="form-control" rows="8" placeholder='{ "name": "Item" }'></textarea>
+                </div>
+
+                <button id="sb-send-btn" class="btn btn-primary" style="width: 100%;" onclick="executeApiRequest()">
+                    Send Request ⚡
+                </button>
+            </div>
+
+            <!-- Right: Response Viewer -->
+            <div class="card card-hover">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>📥</span> Gateway Response
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-copy" data-target="sb-res-body">Copy JSON 📋</button>
+                </div>
+
+                <div class="response-header" style="background: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Status:</span>
+                        <span id="sb-res-status" class="badge-code code-2xx" style="margin-left: 0.35rem;">200 Ready</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Latency:</span>
+                        <span id="sb-res-time" class="font-mono" style="font-weight: 600; margin-left: 0.35rem;">-- ms</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Trace ID:</span>
+                        <span id="sb-res-trace" class="font-mono" style="font-weight: 600; font-size: 0.78rem; margin-left: 0.35rem;">none</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Response Payload</label>
+                    <pre id="sb-res-body" class="code-box" style="min-height: 295px;">{
+  "message": "Click 'Send Request' or select a Quick Preset above to test microservices via Gateway."
+}</pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div>API Gateway &amp; Microservices Platform • Interactive Sandbox Mode</div>
+    </footer>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+    <script>
+        // Auto-run default request on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            executeApiRequest();
+        });
+    </script>
+</body>
+</html>

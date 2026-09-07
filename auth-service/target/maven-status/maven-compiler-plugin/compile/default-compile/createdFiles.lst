@@ -1,0 +1,12 @@
+com\apigateway\auth\dto\ValidateTokenRequest.class
+com\apigateway\auth\service\AuthService.class
+com\apigateway\auth\entity\User.class
+com\apigateway\auth\controller\AuthController.class
+com\apigateway\auth\dto\AuthRequest.class
+com\apigateway\auth\config\DataInitializer.class
+com\apigateway\auth\dto\AuthResponse.class
+com\apigateway\auth\dto\RegisterRequest.class
+com\apigateway\auth\dto\UserDto.class
+com\apigateway\auth\AuthServiceApplication.class
+com\apigateway\auth\repository\UserRepository.class
+com\apigateway\auth\service\JwtService.class

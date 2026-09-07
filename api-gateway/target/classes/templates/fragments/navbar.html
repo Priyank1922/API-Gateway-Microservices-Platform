@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <header class="navbar" th:fragment="navbar(activeTab)">
+        <div class="nav-container">
+            <a href="/" class="brand-link">
+                <div class="brand-icon">🌐</div>
+                <div>
+                    <div>API Gateway &amp; Microservices</div>
+                    <div style="font-size: 0.72rem; font-weight: 500; color: var(--text-muted);">Spring Cloud &amp; Eureka Mesh</div>
+                </div>
+            </a>
+
+            <ul class="nav-tabs">
+                <li class="nav-item">
+                    <a href="/" th:classappend="${activeTab == 'overview' ? 'active' : ''}">
+                        <span>📊</span> Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/sandbox" th:classappend="${activeTab == 'sandbox' ? 'active' : ''}">
+                        <span>⚡</span> API Sandbox
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/resilience" th:classappend="${activeTab == 'resilience' ? 'active' : ''}">
+                        <span>🛡️</span> Resilience Lab
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/security" th:classappend="${activeTab == 'security' ? 'active' : ''}">
+                        <span>🤖</span> AI Security &amp; Anomaly
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/docs" th:classappend="${activeTab == 'docs' ? 'active' : ''}">
+                        <span>📖</span> API Catalog
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-meta">
+                <div class="pulse-indicator" id="live-stats-badge">
+                    <span class="pulse-dot"></span>
+                    <span>Gateway Active (8080)</span>
+                </div>
+                <a href="http://localhost:8761" target="_blank" class="btn btn-secondary btn-sm" title="Open Eureka Dashboard in new tab">
+                    Eureka UI ↗
+                </a>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

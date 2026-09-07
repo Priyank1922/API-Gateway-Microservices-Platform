@@ -1,0 +1,14 @@
+com\apigateway\ai\dto\ThreatAnalysisResult.class
+com\apigateway\ai\entity\SecurityThreatLog.class
+com\apigateway\ai\AiAnalyticsApplication.class
+com\apigateway\ai\entity\TrafficMetric.class
+com\apigateway\ai\config\DataInitializer.class
+com\apigateway\ai\dto\ThreatAnalysisRequest.class
+com\apigateway\ai\dto\TrafficPredictionDto.class
+com\apigateway\ai\repository\TrafficMetricRepository.class
+com\apigateway\ai\repository\SecurityThreatLogRepository.class
+com\apigateway\ai\controller\AiAnalyticsController.class
+com\apigateway\ai\dto\AnalyticsDashboardDto.class
+com\apigateway\ai\service\AiAnalyticsService.class
+com\apigateway\ai\service\AnomalyDetectionEngine.class
+com\apigateway\ai\service\TrafficPredictionService.class

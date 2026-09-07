@@ -1,0 +1,8 @@
+com\apigateway\product\ProductServiceApplication.class
+com\apigateway\product\dto\StockDeductRequest.class
+com\apigateway\product\repository\ProductRepository.class
+com\apigateway\product\entity\Product.class
+com\apigateway\product\config\DataInitializer.class
+com\apigateway\product\controller\ProductController.class
+com\apigateway\product\service\ProductService.class
+com\apigateway\product\dto\ProductDto.class

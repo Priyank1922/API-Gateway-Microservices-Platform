@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Catalog &amp; Documentation | API Gateway Platform</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar('docs')}"></div>
+
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">API Gateway Endpoint Catalog</h1>
+            <p class="page-subtitle">Standardized OpenAPI specification and live endpoint contracts for all microservices in the cluster.</p>
+        </div>
+
+        <!-- Microservice 1: Auth Service -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🔑</span> Authentication &amp; User Service (Port 8081 / Gateway Route: <code>/api/auth/**</code>)
+                </div>
+                <span class="badge-code code-2xx">MySQL: auth_db</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Auth Level</th>
+                            <th>Description</th>
+                            <th>Payload / Parameters</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/auth/register</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Register a new user and generate a dedicated API Key</td>
+                            <td><code>{ username, email, password, role }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('auth-register')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/auth/login</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Authenticate and receive an HMAC-SHA256 JWT Bearer token</td>
+                            <td><code>{ username, password }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('auth-login')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/auth/validate</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Verify JWT token signature and expiration</td>
+                            <td><code>{ token: "..." }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/auth/users</code></td>
+                            <td><span class="metric-badge" style="background: var(--danger-light); color: var(--danger);">JWT Admin</span></td>
+                            <td>List all registered users and their API keys</td>
+                            <td>None</td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm">Test ⚡</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Microservice 2: Product Service -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📦</span> Product Catalog &amp; Inventory Service (Port 8082 / Gateway Route: <code>/api/products/**</code>)
+                </div>
+                <span class="badge-code code-2xx">MySQL: product_db</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Auth Level</th>
+                            <th>Description</th>
+                            <th>Payload / Parameters</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/products</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Retrieve all active products (supports category &amp; search filters)</td>
+                            <td>Query: <code>?category=&amp;search=</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('get-products')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/products/{id}</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Fetch single product details by primary key ID</td>
+                            <td>Path variable: <code>{id}</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/products</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">JWT / API Key</span></td>
+                            <td>Create a new product item with inventory stock</td>
+                            <td><code>{ name, sku, category, price, stockQuantity, description }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('create-product')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/products/{id}/deduct-stock</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">JWT / API Key</span></td>
+                            <td>Atomic inventory stock deduction</td>
+                            <td><code>{ quantity: 2 }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm">Test ⚡</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Microservice 3: Order Service -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🛒</span> Order Processing &amp; Billing Service (Port 8083 / Gateway Route: <code>/api/orders/**</code>)
+                </div>
+                <span class="badge-code code-2xx">MySQL: order_db</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Auth Level</th>
+                            <th>Description</th>
+                            <th>Payload / Parameters</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/orders</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">JWT / API Key</span></td>
+                            <td>List orders filtered by user or recent history</td>
+                            <td>Query: <code>?userId=&amp;username=</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('get-orders')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/orders</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">JWT / API Key</span></td>
+                            <td>Place a new multi-item order with price calculation</td>
+                            <td><code>{ userId, username, paymentMethod, items: [...] }</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('create-order')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/orders/{id}/pay</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">JWT / API Key</span></td>
+                            <td>Simulate payment capture and transition status to PAID</td>
+                            <td>Path: <code>{id}</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm">Test ⚡</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Microservice 4: AI Analytics Service -->
+        <div class="card card-hover">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🤖</span> AI Analytics &amp; Threat Defense Service (Port 8084 / Gateway Route: <code>/api/ai/**</code>)
+                </div>
+                <span class="badge-code code-2xx">MySQL: ai_db</span>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Endpoint</th>
+                            <th>Auth Level</th>
+                            <th>Description</th>
+                            <th>Payload / Parameters</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/ai/analytics</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Fetch real-time cluster telemetry, threat count, and forecast</td>
+                            <td>Query: <code>?serviceName=</code></td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('ai-analytics')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><code>/api/ai/analyze-request</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Inspect payload for SQLi, XSS, Path Traversal &amp; return threat score</td>
+                            <td><code>{ clientIp, endpoint, httpMethod, payload }</code></td>
+                            <td><a href="/security" class="btn btn-secondary btn-sm">Inspect 🔬</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><code>/api/ai/threats</code></td>
+                            <td><span class="metric-badge" style="background: var(--bg-subtle); color: var(--text-muted);">Public</span></td>
+                            <td>Retrieve top 50 recent quarantined security threat logs</td>
+                            <td>None</td>
+                            <td><a href="/security" class="btn btn-secondary btn-sm">View Log 📋</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div>API Gateway &amp; Microservices Platform • Standardized OpenAPI Docs</div>
+    </footer>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

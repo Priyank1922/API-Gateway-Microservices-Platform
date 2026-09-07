@@ -1,0 +1,11 @@
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\ApiGatewayApplication.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\config\CorsConfig.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\controller\DashboardController.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\controller\FallbackController.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\controller\GatewayApiController.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\filter\AiThreatDetectionFilter.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\filter\AuthenticationFilter.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\filter\CorrelationTraceFilter.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\filter\LoggingFilter.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\filter\RateLimiterFilter.java
+C:\Desktop\API_GateWay\api-gateway\src\main\java\com\apigateway\gateway\service\AiAnomalyService.java

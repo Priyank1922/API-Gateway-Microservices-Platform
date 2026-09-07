@@ -1,0 +1,12 @@
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\AuthServiceApplication.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\config\DataInitializer.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\controller\AuthController.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\dto\AuthRequest.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\dto\AuthResponse.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\dto\RegisterRequest.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\dto\UserDto.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\dto\ValidateTokenRequest.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\entity\User.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\repository\UserRepository.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\service\AuthService.java
+C:\Desktop\API_GateWay\auth-service\src\main\java\com\apigateway\auth\service\JwtService.java
