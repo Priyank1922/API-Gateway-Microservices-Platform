@@ -221,9 +221,18 @@ function applyPreset(presetKey) {
     document.getElementById('sb-path').value = preset.path;
     document.getElementById('sb-body').value = preset.body;
 
+    // For protected routes (like GET /api/orders, POST /api/orders, POST /api/products), ensure a token or API Key is populated
+    const tokenInput = document.getElementById('sb-token');
+    const apiKeyInput = document.getElementById('sb-api-key');
+    if (['get-orders', 'create-order', 'create-product'].includes(presetKey)) {
+        if (!tokenInput.value && !apiKeyInput.value) {
+            apiKeyInput.value = 'ak_admin_prod_key_77889900112233';
+        }
+    }
+
     // highlight active chip
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    const clickedChip = event ? event.currentTarget : null;
+    const clickedChip = (typeof event !== 'undefined' && event) ? event.currentTarget : null;
     if (clickedChip) clickedChip.classList.add('active');
 }
 

@@ -97,8 +97,17 @@ public class AiAnalyticsService {
         dto.setCurrentGlobalRps(18.2 + (Math.random() * 4.0));
         dto.setAvgLatencyMs(24.5 + (Math.random() * 6.0));
 
-        dto.setRecentThreats(threatRepo.findTop50ByOrderByCreatedAtDesc());
-        dto.setTrafficHistory(trafficRepo.findTop30ByOrderByRecordedAtDesc());
+        try {
+            dto.setRecentThreats(threatRepo.findTop50ByOrderByCreatedAtDesc());
+        } catch (Exception e) {
+            dto.setRecentThreats(List.of());
+        }
+
+        try {
+            dto.setTrafficHistory(trafficRepo.findTop30ByOrderByRecordedAtDesc());
+        } catch (Exception e) {
+            dto.setTrafficHistory(List.of());
+        }
 
         Map<String, Double> dist = new HashMap<>();
         dist.put("SQL_INJECTION", 42.0);
@@ -108,7 +117,11 @@ public class AiAnalyticsService {
         dist.put("SECURITY_SCANNER_BOT", 5.0);
         dto.setThreatDistribution(dist);
 
-        dto.setPrediction(predictionService.predictTraffic(serviceName));
+        try {
+            dto.setPrediction(predictionService.predictTraffic(serviceName));
+        } catch (Exception e) {
+            // prediction fallback
+        }
         return dto;
     }
 

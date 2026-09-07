@@ -119,7 +119,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         // Public AI endpoints for telemetry
-        if (path.startsWith("/api/ai/")) {
+        if (path.startsWith("/api/ai")) {
             return true;
         }
 
