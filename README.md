@@ -76,6 +76,8 @@ Default database configuration in `application.yml`:
 - **Password**: `root` (or configured via environment variable `DB_PASSWORD`)
 - **Connection Param**: `createDatabaseIfNotExist=true` (Auto-creates missing databases on startup)
 
+<img width="1242" height="790" alt="image" src="https://github.com/user-attachments/assets/5550733a-de29-4ce2-be80-f1f04a3fb028" />
+
 ---
 
 ##  How to Build & Run (No Docker/Kubernetes)
