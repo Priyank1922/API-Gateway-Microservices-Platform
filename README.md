@@ -2,6 +2,10 @@
 
 An enterprise-grade, distributed **API Gateway & Microservices Platform** built with **Java 17+ / Java 25**, **Spring Boot 3.3**, **Spring Cloud Gateway**, **Netflix Eureka Service Discovery**, **Resilience4j**, **MySQL**, and a standalone **Thymeleaf UI Dashboard** with sleek micro-animations and hover effects.
 
+<img width="1621" height="872" alt="image" src="https://github.com/user-attachments/assets/55fa5ae9-60d6-4fd7-81bd-3247f0edcd92" />
+<img width="1847" height="935" alt="image" src="https://github.com/user-attachments/assets/f149d3ae-fb7b-4af5-9f47-10c8006b1b21" />
+
+
 ---
 
 ##  Architecture Overview
@@ -76,7 +80,6 @@ Default database configuration in `application.yml`:
 - **Password**: `root` (or configured via environment variable `DB_PASSWORD`)
 - **Connection Param**: `createDatabaseIfNotExist=true` (Auto-creates missing databases on startup)
 
-<img width="1242" height="790" alt="image" src="https://github.com/user-attachments/assets/5550733a-de29-4ce2-be80-f1f04a3fb028" />
 
 ---
 
