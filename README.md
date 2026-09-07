@@ -37,7 +37,7 @@ An enterprise-grade, distributed **API Gateway & Microservices Platform** built 
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 1. **Request Routing & Load Balancing**:
    - Eureka dynamically routes `lb://AUTH-SERVICE`, `lb://PRODUCT-SERVICE`, `lb://ORDER-SERVICE`, and `lb://AI-ANALYTICS-SERVICE`.
@@ -62,7 +62,7 @@ An enterprise-grade, distributed **API Gateway & Microservices Platform** built 
 
 ---
 
-## 🗄️ MySQL Database Setup
+##  MySQL Database Setup
 
 Each microservice automatically creates and maintains its schema in MySQL:
 - `auth_db`: Users, roles, credentials, API keys
@@ -78,7 +78,7 @@ Default database configuration in `application.yml`:
 
 ---
 
-## 💻 How to Build & Run (No Docker/Kubernetes)
+##  How to Build & Run (No Docker/Kubernetes)
 
 ### 1. Build All Modules
 Run the build script or use standard Maven:
@@ -102,7 +102,7 @@ To terminate all running microservice instances:
 
 ---
 
-## 🌐 Dashboard & Service URLs
+##  Dashboard & Service URLs
 
 | Component | URL | Description |
 |---|---|---|
@@ -119,10 +119,15 @@ To terminate all running microservice instances:
 
 ---
 
-## 🔑 Pre-Seeded Default Accounts
+##  Pre-Seeded Default Accounts
 
 | Username | Password | Role | Default API Key |
 |---|---|---|---|
 | `admin` | `admin123` | `ROLE_ADMIN` | `ak_admin_prod_key_77889900112233` |
 | `developer` | `developer123` | `ROLE_DEVELOPER` | `ak_dev_sandbox_key_44556677889900` |
 | `demouser` | `demo123` | `ROLE_USER` | `ak_demo_client_key_11223344556677` |
+
+
+
+Author ::
+Priyank Mehta
