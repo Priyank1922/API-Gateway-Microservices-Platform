@@ -59,7 +59,7 @@ public class AuthController {
     }
 
     @GetMapping("/verify-key")
-    public ResponseEntity<?> verifyApiKey(@RequestParam String apiKey) {
+    public ResponseEntity<?> verifyApiKey(@RequestParam("apiKey") String apiKey) {
         return authService.getUserByApiKey(apiKey)
                 .map(user -> ResponseEntity.ok((Object) Map.of("valid", true, "user", user)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -67,7 +67,7 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@RequestParam String username) {
+    public ResponseEntity<?> getProfile(@RequestParam("username") String username) {
         return authService.getUserProfile(username)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -79,7 +79,7 @@ public class AuthController {
     }
 
     @PostMapping("/regenerate-key")
-    public ResponseEntity<?> regenerateKey(@RequestParam String username) {
+    public ResponseEntity<?> regenerateKey(@RequestParam("username") String username) {
         try {
             String newKey = authService.regenerateApiKey(username);
             return ResponseEntity.ok(Map.of("username", username, "apiKey", newKey));

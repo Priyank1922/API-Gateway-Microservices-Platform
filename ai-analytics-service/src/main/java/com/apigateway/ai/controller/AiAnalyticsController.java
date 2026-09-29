@@ -22,7 +22,7 @@ public class AiAnalyticsController {
 
     @GetMapping("/analytics")
     public ResponseEntity<AnalyticsDashboardDto> getAnalytics(
-            @RequestParam(required = false, defaultValue = "GLOBAL_GATEWAY_CLUSTER") String serviceName) {
+            @RequestParam(name = "serviceName", required = false, defaultValue = "GLOBAL_GATEWAY_CLUSTER") String serviceName) {
         return ResponseEntity.ok(aiAnalyticsService.getDashboardData(serviceName));
     }
 
@@ -44,7 +44,7 @@ public class AiAnalyticsController {
 
     @GetMapping("/prediction")
     public ResponseEntity<TrafficPredictionDto> getTrafficPrediction(
-            @RequestParam(required = false, defaultValue = "GLOBAL_GATEWAY_CLUSTER") String serviceName) {
+            @RequestParam(name = "serviceName", required = false, defaultValue = "GLOBAL_GATEWAY_CLUSTER") String serviceName) {
         return ResponseEntity.ok(aiAnalyticsService.getPrediction(serviceName));
     }
 

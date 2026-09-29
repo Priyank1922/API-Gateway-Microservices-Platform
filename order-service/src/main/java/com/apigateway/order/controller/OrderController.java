@@ -24,8 +24,8 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllOrders(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) String username) {
+            @RequestParam(name = "userId", required = false) Long userId,
+            @RequestParam(name = "username", required = false) String username) {
         if (userId != null) {
             return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
         }
@@ -36,14 +36,14 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<?> getOrderById(@PathVariable("id") Long id) {
         return orderService.getOrderById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @GetMapping("/number/{orderNumber}")
-    public ResponseEntity<?> getOrderByNumber(@PathVariable String orderNumber) {
+    public ResponseEntity<?> getOrderByNumber(@PathVariable("orderNumber") String orderNumber) {
         return orderService.getOrderByOrderNumber(orderNumber)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
@@ -63,7 +63,7 @@ public class OrderController {
     }
 
     @PostMapping("/{id}/pay")
-    public ResponseEntity<?> markOrderPaid(@PathVariable Long id) {
+    public ResponseEntity<?> markOrderPaid(@PathVariable("id") Long id) {
         try {
             OrderResponse updated = orderService.markOrderPaid(id);
             return ResponseEntity.ok(updated);
@@ -75,7 +75,7 @@ public class OrderController {
     }
 
     @PostMapping("/{id}/cancel")
-    public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
+    public ResponseEntity<?> cancelOrder(@PathVariable("id") Long id) {
         try {
             OrderResponse updated = orderService.cancelOrder(id);
             return ResponseEntity.ok(updated);

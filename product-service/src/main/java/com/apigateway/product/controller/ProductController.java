@@ -24,8 +24,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts(
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String search) {
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "search", required = false) String search) {
         if (category != null && !category.isBlank()) {
             return ResponseEntity.ok(productService.getProductsByCategory(category));
         }
@@ -36,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -44,7 +44,7 @@ public class ProductController {
     }
 
     @GetMapping("/sku/{sku}")
-    public ResponseEntity<?> getProductBySku(@PathVariable String sku) {
+    public ResponseEntity<?> getProductBySku(@PathVariable("sku") String sku) {
         return productService.getProductBySku(sku)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDto dto) {
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductDto dto) {
         try {
             ProductDto updated = productService.updateProduct(id, dto);
             return ResponseEntity.ok(updated);
@@ -80,7 +80,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
         try {
             productService.deleteProduct(id);
             return ResponseEntity.ok(Map.of("message", "Product marked inactive", "id", id));
@@ -90,7 +90,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/deduct-stock")
-    public ResponseEntity<?> deductStock(@PathVariable Long id, @Valid @RequestBody StockDeductRequest request) {
+    public ResponseEntity<?> deductStock(@PathVariable("id") Long id, @Valid @RequestBody StockDeductRequest request) {
         try {
             ProductDto updated = productService.deductStock(id, request.getQuantity());
             return ResponseEntity.ok(updated);
